@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-var etcdServers = flag.String("etcd", "", "Comma-separated list of etcd servers.")
+var etcdServers = flag.String("etcd", "http://127.0.0.1:2379", "Comma-separated list of etcd servers.")
 
 func init() {
 	flag.Parse()
