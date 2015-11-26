@@ -97,7 +97,7 @@ func (db EtcdDB) GetConfig() (*Config, error) {
 		if err != nil {
 			return nil, err
 		}
-		if response == nil || response.Node == nil || response.Node.Value == "" {
+		if response == nil || response.Node == nil {
 			return nil, ErrNoGateway
 		}
 		gateway := net.ParseIP(response.Node.Value).To4()
