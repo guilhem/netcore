@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"flag"
 	"log"
 	"net"
 	"regexp"
@@ -11,6 +12,10 @@ import (
 
 	"github.com/dustywilson/dnscache"
 	"github.com/miekg/dns"
+)
+
+var (
+	dnslisten = flag.String("dnslisten", "0.0.0.0:53", "Listen address for DNS")
 )
 
 type DNSDB interface {
@@ -63,11 +68,10 @@ func dnsSetup(cfg *Config) chan error {
 	exit := make(chan error, 1)
 
 	go func() {
-		exit <- dns.ListenAndServe("0.0.0.0:53", "tcp", nil) // TODO: should use cfg to define the listening ip/port
+		exit <- dns.ListenAndServe(*dnslisten, "tcp", nil) // TODO: should use cfg to define the listening ip/port
 	}()
-
 	go func() {
-		exit <- dns.ListenAndServe("0.0.0.0:53", "udp", nil) // TODO: should use cfg to define the listening ip/port
+		exit <- dns.ListenAndServe(*dnslisten, "udp", nil) // TODO: should use cfg to define the listening ip/port
 	}()
 
 	return exit
